@@ -8,8 +8,8 @@ import { Component, trigger,state, style, transition, animate, keyframes } from 
             <div id="content" [@focusPanel]='state' ><img id="imgContainer" [src]="source"></div>
         </div>
         <div class="columns">
-            <button (click)="toggleMove()"><</button>
-            <button (click)="toggleMoveRight()">></button>
+            <button (click)="nextImage()">Next</button>
+            <button (click)="importImage()">Import</button>
         </div>
     </div>
     `,
@@ -17,8 +17,10 @@ import { Component, trigger,state, style, transition, animate, keyframes } from 
         button{font-size: 1.8em;}
         #content {padding:30px; background:#eeeeee;}
         .row{display: inline-block;min height: 40em;}
-        #picContainer{min-height: 25em; box-shadow: 2px 3px 15px -8px;}
-
+        #picContainer{height: 50em; box-shadow: 2px 3px 15px -8px;
+        width: 35em;}
+        img{max-height: 38em; max-width: 30em; width: 100%;
+    height: 100%;}
     `],
     animations:[
         trigger('focusPanel', [
@@ -46,8 +48,17 @@ import { Component, trigger,state, style, transition, animate, keyframes } from 
     ]
 })
 export class AppComponent {
-    source='./app/me1.jpg';
+    sourceArr=[
+      './app/me1.jpg',
+      './app/me2.jpg'
+    ];
+    i: int = 0;
+    source: string = '';
     state: string = 'inactive';
+
+    ngOnInit(){
+      this.source = this.sourceArr[this.i];
+    }
 
     //Check this:
     //https://embed.plnkr.co/VKLszgqJtobyVruBj3Op/
@@ -56,8 +67,17 @@ export class AppComponent {
       this.state = (this.state === 'inactive' ? 'active' : 'inactive');
     }
 
-    toggleMoveRight(){
-      this.source = './app/me2.jpg';
-
+    nextImage(){
+      if((this.i + 1) != this.sourceArr.length){
+        this.i++;
+      } else {
+        this.i = 0;
+      }
+      this.source = this.sourceArr[this.i];
     }
+
+    importImage(){
+    
+    }
+
  }
