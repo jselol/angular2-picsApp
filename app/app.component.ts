@@ -1,4 +1,5 @@
-import { Component, trigger,state, style, transition, animate, keyframes } from '@angular/core';
+import { Component, trigger,state, style, transition, animate, keyframes} from '@angular/core';
+
 
 @Component({
     selector: 'my-app',
@@ -9,18 +10,22 @@ import { Component, trigger,state, style, transition, animate, keyframes } from 
         </div>
         <div class="columns">
             <button (click)="nextImage()">Next</button>
-            <button (click)="importImage()">Import</button>
         </div>
+
+        <div>
+            <input type="file" (change)="change($event)" />
+            <img id="image" />
+        </div>
+
     </div>
     `,
     styles: [`
         button{font-size: 1.8em;}
-        #content {padding:30px; background:#eeeeee;}
+        #content {background:#eeeeee;}
         .row{display: inline-block;min height: 40em;}
         #picContainer{height: 50em; box-shadow: 2px 3px 15px -8px;
         width: 35em;}
-        img{max-height: 38em; max-width: 30em; width: 100%;
-    height: 100%;}
+        img{width: 100%;height: 100%;}
     `],
     animations:[
         trigger('focusPanel', [
@@ -47,37 +52,52 @@ import { Component, trigger,state, style, transition, animate, keyframes } from 
         ])
     ]
 })
+
 export class AppComponent {
+    filesToUpload: Array<File>;
     sourceArr=[
       './app/me1.jpg',
       './app/me2.jpg'
     ];
-    i: int = 0;
+    i = 0;
     source: string = '';
     state: string = 'inactive';
 
     ngOnInit(){
       this.source = this.sourceArr[this.i];
+      this.filesToUpload = [];
+    }
+
+    change(event){
+        var reader = new FileReader();
+        // read the image file as a data URL.
+        reader.readAsDataURL(event.target.files[0]);
+        reader.onload = (e: Event) => {
+          this.onLoadCallback(e);
+        }
+    }
+
+    onLoadCallback(e){
+        var src: string;
+        var imgElement = document.getElementById("imgContainer");
+        src = e.target.result;
+        imgElement.src = src;
+        this.sourceArr.push(imgElement.src);
+    }
+
+    addFileToSrcArr(fileSrc){
+        this.srcArr.push('./app/' + fileSrc);
     }
 
     //Check this:
     //https://embed.plnkr.co/VKLszgqJtobyVruBj3Op/
 
-    toggleMove(){
-      this.state = (this.state === 'inactive' ? 'active' : 'inactive');
-    }
-
     nextImage(){
-      if((this.i + 1) != this.sourceArr.length){
-        this.i++;
-      } else {
-        this.i = 0;
-      }
-      this.source = this.sourceArr[this.i];
+        if((this.i + 1) != this.sourceArr.length){
+          this.i++;
+        } else {
+          this.i = 0;
+        }
+        this.source = this.sourceArr[this.i];
     }
-
-    importImage(){
-    
-    }
-
  }

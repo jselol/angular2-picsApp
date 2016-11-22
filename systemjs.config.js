@@ -13,6 +13,9 @@
       // our app is within the app folder
       app: 'app',
 
+      //drag and drop plugin
+      'ng2-dnd': 'node_modules/ng2-dnd',
+
       // angular bundles
       '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
       '@angular/common': 'npm:@angular/common/bundles/common.umd.js',
@@ -36,7 +39,8 @@
       },
       rxjs: {
         defaultExtension: 'js'
-      }
+      },
+      'ng2-dnd':  { main: 'index.js',  defaultExtension: 'js' }
     }
   });
 })(this);
